@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create New Deepfake</h1>
+<form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="name">Enter Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="video">Select Video:</label>
+        <input type="file" id="video" name="video" accept="video/*" required>
+    </div>
+    <div>
+        <label for="text">Enter Text:</label>
+        <textarea id="text" name="text" required class="wide-input"></textarea>
+    </div>
+    <button type="submit">Upload</button>
+</form>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPMG Deepfake Factory</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>
+                <img src="{{ url_for('static', path='verbund.png') }}" alt="Logo" class="logo">
+                Deepfake Factory
+            </h1>
+        </div>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('upload_form') }}" {% if request.url.path == "/upload" %}class="active"{% endif %}>Create New</a></li>
+            <li><a href="{{ url_for('list_videos') }}" {% if request.url.path == "/list-videos" %}class="active"{% endif %}>List Videos</a></li>
+        </ul>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
