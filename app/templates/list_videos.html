@@ -3,8 +3,15 @@
 {% block content %}
 <h1>List of Uploaded Videos</h1>
 <ul>
-    {% for video in videos %}
-    <li>{{ video }}</li>
+    {% for filename, status, result in videos %}
+    <li>
+        {{ filename }} - Status: {{ status }}
+        {% if status == 'completed' %}
+            - <a href="{{ base_url }}{{ filename }}" target="_blank">View Video</a>
+        {% elif status == 'failed' %}
+            - Reason: {{ result }}
+        {% endif %}
+    </li>
     {% endfor %}
 </ul>
 {% endblock %}
