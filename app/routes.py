@@ -136,7 +136,9 @@ def process_video(file_path, task_id, text):
                     # Poll the API until the video is created
                     poll_url = f"https://api.synclabs.so/lipsync/{job_id}"
                     while True:
+                        print("POLLING... " + poll_url)
                         poll_response = requests.get(poll_url, headers=lipsync_headers)
+                        print(poll_response.json().get('status'))
                         if poll_response.status_code == 200:
                             job_status = poll_response.json().get('status')
                             if job_status == 'completed':
