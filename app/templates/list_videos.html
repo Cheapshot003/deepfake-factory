@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 
-{% block head %}
-{{ super() }}
-<meta http-equiv="refresh" content="10">
-{% endblock %}
-
 {% block content %}
 <h1>List of Uploaded Videos</h1>
 <ul>
@@ -19,4 +14,8 @@
     </li>
     {% endfor %}
 </ul>
+
+<script>
+setInterval(() => location.reload(), 10000);
+</script>
 {% endblock %}
