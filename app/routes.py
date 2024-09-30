@@ -141,10 +141,10 @@ def process_video(file_path, task_id, text):
                         print(poll_response.json().get('status'))
                         if poll_response.status_code == 200:
                             job_status = poll_response.json().get('status')
-                            if job_status == 'completed':
+                            if job_status == 'COMPLETED':
                                 synced_video_url = poll_response.json().get('videoUrl')
                                 break
-                            elif job_status == 'failed':
+                            elif job_status == 'FAILED':
                                 raise Exception(f"Lipsync job failed: {poll_response.json().get('errorMessage')}")
                         else:
                             raise Exception(f"Error polling lipsync job: {poll_response.text}")
