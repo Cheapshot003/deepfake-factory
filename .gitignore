@@ -2,3 +2,5 @@ uploads/
 .env
 __pycache__/
 *.pyc
+audio/
+tasks.db

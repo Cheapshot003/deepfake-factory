@@ -22,7 +22,7 @@
             <li><a href="{{ url_for('list_videos') }}" {% if request.url.path == "/list-videos" %}class="active"{% endif %}>List Videos</a></li>
         </ul>
     </nav>
-    <main>
+    <main id="maindiv">
         {% block content %}{% endblock %}
     </main>
 </body>

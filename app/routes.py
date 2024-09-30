@@ -115,7 +115,7 @@ def process_video(file_path, task_id, text):
                 if not sync_api_key:
                     raise ValueError("SYNC_API_KEY environment variable is not set")
                 
-                lipsync_url = "https://api.sync.com/lipsync"
+                lipsync_url = "https://api.synclabs.so/lipsync"
                 lipsync_headers = {
                     "x-api-key": sync_api_key,
                     "Content-Type": "application/json"
@@ -134,7 +134,7 @@ def process_video(file_path, task_id, text):
                     job_id = lipsync_result.get('id')
                     
                     # Poll the API until the video is created
-                    poll_url = f"https://api.sync.com/lipsync/{job_id}"
+                    poll_url = f"https://api.synclabs.so/lipsync/{job_id}"
                     while True:
                         poll_response = requests.get(poll_url, headers=lipsync_headers)
                         if poll_response.status_code == 200:
