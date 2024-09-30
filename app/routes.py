@@ -123,7 +123,7 @@ def process_video(file_path, task_id, text):
                 lipsync_data = {
                     "audioUrl": f"https://{server_domain}/audio/{os.path.basename(output_audio_path)}",
                     "videoUrl": f"https://{server_domain}/uploads/{os.path.basename(file_path)}",
-                    "model": "sync-1.6.0",
+                    "model": "sync-1.7.1-beta",
                     "synergize": True
                 }
                 
@@ -251,7 +251,7 @@ async def list_videos(request: Request):
     conn.close()
     
     # Add the base URL for videos
-    base_url = "/uploads/"
+    base_url = "/uploads/synced_"
     
     return templates.TemplateResponse("list_videos.html", {
         "request": request, 
