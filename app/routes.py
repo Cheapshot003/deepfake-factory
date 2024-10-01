@@ -11,6 +11,8 @@ from concurrent.futures import ThreadPoolExecutor
 import moviepy.config as config
 from moviepy.editor import VideoFileClip
 import json
+import uuid
+import time
 
 router = APIRouter()
 templates = Jinja2Templates(directory="app/templates")
@@ -35,13 +37,6 @@ def init_db():
     conn.close()
 
 init_db()
-
-
-import requests
-import os
-import json
-import time
-from moviepy.editor import VideoFileClip
 
 def process_video(file_path, task_id, text):
     try:
@@ -153,8 +148,15 @@ def process_video(file_path, task_id, text):
                             raise Exception(f"Error polling lipsync job: {poll_response.text}")
                         time.sleep(10)  # Wait for 10 seconds before polling again
                     
-                    # Download the synced video
-                    synced_video_path = os.path.join("uploads", f"synced_{os.path.basename(file_path)}")
+                    # Generate a unique identifier
+                    unique_id = str(uuid.uuid4())[:8]  # Using first 8 characters of UUID
+                    
+                    # Download the synced video with a unique filename
+                    original_filename = os.path.basename(file_path)
+                    filename_without_ext, file_extension = os.path.splitext(original_filename)
+                    unique_filename = f"{filename_without_ext}_{unique_id}{file_extension}"
+                    synced_video_path = os.path.join("uploads", f"synced_{unique_filename}")
+                    
                     synced_video_response = requests.get(synced_video_url)
                     with open(synced_video_path, 'wb') as synced_video_file:
                         synced_video_file.write(synced_video_response.content)
@@ -162,6 +164,13 @@ def process_video(file_path, task_id, text):
                     print(f"Lipsync completed. Synced video saved: {synced_video_path}")
                     status = 'completed'
                     result = f"Voice cloned, TTS generated, and lipsync completed. Synced video: {synced_video_path}"
+                    
+                    # Update the filename in the database
+                    conn = sqlite3.connect('tasks.db')
+                    c = conn.cursor()
+                    c.execute("UPDATE tasks SET filename = ? WHERE id = ?", (f"synced_{unique_filename}", task_id))
+                    conn.commit()
+                    conn.close()
                 else:
                     print(f"Error in lipsync: {lipsync_response.text}")
                     status = 'failed'
@@ -185,7 +194,7 @@ def process_video(file_path, task_id, text):
     
     finally:
         # Delete the cloned voice from ElevenLabs
-        if voice_id:
+        if 'voice_id' in locals():
             delete_url = f"https://api.elevenlabs.io/v1/voices/{voice_id}"
             delete_headers = {
                 "Accept": "application/json",
@@ -270,10 +279,10 @@ async def list_videos(request: Request):
     conn.close()
     
     # Add the base URL for videos
-    base_url = "/uploads/synced_"
+    base_url = "/uploads/"
     
     return templates.TemplateResponse("list_videos.html", {
-        "request": request, 
+        "request": request,
         "videos": videos,
         "base_url": base_url
     })
