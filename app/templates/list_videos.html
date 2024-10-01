@@ -8,15 +8,15 @@
         <strong>Status:</strong> {{ video[1] }}<br>
         <strong>Result:</strong> {{ video[2] }}<br>
         {% if video[1] == 'completed' %}
-            <video width="320" height="240" controls>
-                <source src="{{ base_url }}{{ video[0] }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <strong>Video Link:</strong> 
+            <a href="{{ base_url }}{{ video[3] }}" target="_blank">
+                {{ video[3] }}
+            </a>
         {% endif %}
     </li>
 {% endfor %}
 </ul>
 <script>
-setInterval(() => location.reload(), 10000);
+setInterval(() => location.reload(), 5000);
 </script>
 {% endblock %}

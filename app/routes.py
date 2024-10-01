@@ -265,7 +265,7 @@ async def upload_video(
 async def list_videos(request: Request):
     conn = sqlite3.connect('tasks.db')
     c = conn.cursor()
-    c.execute("SELECT name, status, result FROM tasks ORDER BY id DESC")
+    c.execute("SELECT name, status, result, filename FROM tasks ORDER BY id DESC")
     videos = c.fetchall()
     conn.close()
     
@@ -273,7 +273,7 @@ async def list_videos(request: Request):
     base_url = "/uploads/synced_"
     
     return templates.TemplateResponse("list_videos.html", {
-        "request": request, 
+        "request": request", 
         "videos": videos,
         "base_url": base_url
     })
