@@ -273,7 +273,7 @@ async def list_videos(request: Request):
     base_url = "/uploads/synced_"
     
     return templates.TemplateResponse("list_videos.html", {
-        "request": request", 
+        "request": request, 
         "videos": videos,
         "base_url": base_url
     })
