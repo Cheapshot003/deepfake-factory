@@ -1,20 +1,21 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>List of Uploaded Videos</h1>
+<h1>List of Videos</h1>
 <ul>
-    {% for filename, status, result in videos %}
+{% for video in videos %}
     <li>
-        {{ filename }} - Status: {{ status }}
-        {% if status == 'completed' %}
-            - <a href="{{ base_url }}{{ filename }}" target="_blank">View Video</a>
-        {% elif status == 'failed' %}
-            - Reason: {{ result }}
+        <strong>Name:</strong> {{ video[0] }}<br>
+        <strong>Status:</strong> {{ video[1] }}<br>
+        <strong>Result:</strong> {{ video[2] }}<br>
+        {% if video[1] == 'completed' %}
+            <video width="320" height="240" controls>
+                <source src="{{ base_url }}{{ video[0] }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         {% endif %}
     </li>
-    {% endfor %}
+{% endfor %}
 </ul>
-
 <script>
 setInterval(() => location.reload(), 10000);
 </script>

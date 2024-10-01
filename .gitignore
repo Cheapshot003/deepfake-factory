@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 audio/
 tasks.db
+/venv/*
+venv/*
+venv/

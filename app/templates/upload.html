@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    .radio-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .radio-group input[type="radio"] {
+        margin-right: 5px;
+    }
+</style>
 <h1>Create New Deepfake</h1>
 <form hx-post="/upload" hx-encoding="multipart/form-data" hx-swap="outerHTML" hx-target="body">
     <div>
@@ -7,16 +17,16 @@
         <input type="text" id="name" name="name" required>
     </div>
     <div>
-        <label for="video">Select Video:</label>
+        <label for="video">Upload Video or select preset below:</label>
         <input type="file" id="video" name="video" accept="video/*">
     </div>
     <div>
         <label>Presets:</label>
-        <div>
+        <div class="radio-group">
             <input type="radio" id="nehammer" name="preset" value="Nehammer" required>
             <label for="nehammer">Nehammer</label>
         </div>
-        <div>
+        <div class="radio-group">
             <input type="radio" id="custom" name="preset" value="Custom" required>
             <label for="custom">Custom</label>
         </div>
@@ -31,12 +41,10 @@
 <p>{{ message }}</p>
 {% endif %}
 {% endblock %}
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const presetRadios = document.querySelectorAll('input[name="preset"]');
     const videoInput = document.getElementById('video');
-
     presetRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'Nehammer') {

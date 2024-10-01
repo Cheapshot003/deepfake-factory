@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 import asyncio
 import requests
+from typing import Optional
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
 import moviepy.config as config
@@ -28,11 +29,13 @@ def init_db():
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   filename TEXT,
                   status TEXT,
-                  result TEXT)''')
+                  result TEXT,
+                  name TEXT)''')
     conn.commit()
     conn.close()
 
 init_db()
+
 
 import requests
 import os
@@ -243,7 +246,7 @@ async def upload_video(
     # Create a new task in the database
     conn = sqlite3.connect('tasks.db')
     c = conn.cursor()
-    c.execute("INSERT INTO tasks (filename, status, result) VALUES (?, ?, ?)", (filename, 'pending', ''))
+    c.execute("INSERT INTO tasks (filename, status, result, name) VALUES (?, ?, ?, ?)", (filename, 'pending', '', name))
     task_id = c.lastrowid
     conn.commit()
     conn.close()
@@ -262,7 +265,7 @@ async def upload_video(
 async def list_videos(request: Request):
     conn = sqlite3.connect('tasks.db')
     c = conn.cursor()
-    c.execute("SELECT filename, status, result FROM tasks ORDER BY id DESC")
+    c.execute("SELECT name, status, result FROM tasks ORDER BY id DESC")
     videos = c.fetchall()
     conn.close()
     
