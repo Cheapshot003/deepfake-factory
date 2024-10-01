@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <h1>Create New Deepfake</h1>
 <form hx-post="/upload" hx-encoding="multipart/form-data" hx-swap="outerHTML" hx-target="body">
@@ -9,7 +8,18 @@
     </div>
     <div>
         <label for="video">Select Video:</label>
-        <input type="file" id="video" name="video" accept="video/*" required>
+        <input type="file" id="video" name="video" accept="video/*">
+    </div>
+    <div>
+        <label>Presets:</label>
+        <div>
+            <input type="radio" id="nehammer" name="preset" value="Nehammer" required>
+            <label for="nehammer">Nehammer</label>
+        </div>
+        <div>
+            <input type="radio" id="custom" name="preset" value="Custom" required>
+            <label for="custom">Custom</label>
+        </div>
     </div>
     <div>
         <label for="text">Enter Text:</label>
@@ -17,8 +27,26 @@
     </div>
     <button type="submit">Upload</button>
 </form>
-
 {% if message %}
 <p>{{ message }}</p>
 {% endif %}
 {% endblock %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const presetRadios = document.querySelectorAll('input[name="preset"]');
+    const videoInput = document.getElementById('video');
+
+    presetRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'Nehammer') {
+                videoInput.disabled = true;
+                videoInput.required = false;
+            } else {
+                videoInput.disabled = false;
+                videoInput.required = true;
+            }
+        });
+    });
+});
+</script>
