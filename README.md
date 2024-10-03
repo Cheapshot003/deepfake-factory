@@ -7,4 +7,10 @@ Uses ElevenLabs for the voice and sync.so for the lipsync. Provide API Keys in t
 
 `SERVER_DOMAIN=deepfakefactory.io `
 
+---
+
+`pip install -r requirements.txt`
+`uvicorn app.main:app --reload`
+
+(You should configure a reverse proxy if you want to deploy it publicly lol)
 
