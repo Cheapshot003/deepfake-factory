@@ -21,17 +21,6 @@
         <input type="file" id="video" name="video" accept="video/*">
     </div>
     <div>
-        <label>Presets:</label>
-        <div class="radio-group">
-            <input type="radio" id="nehammer" name="preset" value="Nehammer" required>
-            <label for="nehammer">Nehammer</label>
-        </div>
-        <div class="radio-group">
-            <input type="radio" id="custom" name="preset" value="Custom" required>
-            <label for="custom">Custom</label>
-        </div>
-    </div>
-    <div>
         <label for="text">Enter Text:</label>
         <textarea id="text" name="text" required class="wide-input"></textarea>
     </div>
@@ -41,20 +30,3 @@
 <p>{{ message }}</p>
 {% endif %}
 {% endblock %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const presetRadios = document.querySelectorAll('input[name="preset"]');
-    const videoInput = document.getElementById('video');
-    presetRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'Nehammer') {
-                videoInput.disabled = true;
-                videoInput.required = false;
-            } else {
-                videoInput.disabled = false;
-                videoInput.required = true;
-            }
-        });
-    });
-});
-</script>

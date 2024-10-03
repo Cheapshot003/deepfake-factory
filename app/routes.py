@@ -242,7 +242,7 @@ async def upload_video(
                 "message": "Please upload a video file for custom preset."
             })
         contents = await video.read()
-        filename = video.filename
+        filename = video.filename.replace(" ","_")
         
         # Ensure the uploads directory exists
         os.makedirs("uploads", exist_ok=True)
