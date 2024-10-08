@@ -9,6 +9,28 @@
     .radio-group input[type="radio"] {
         margin-right: 5px;
     }
+    .spinner {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(0,0,0,.3);
+        border-radius: 50%;
+        border-top-color: #000;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+        to { -webkit-transform: rotate(360deg); }
+    }
+    .spinner-container {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
 </style>
 <h1>Create New "Lipsync"</h1>
 <form hx-post="/upload" hx-encoding="multipart/form-data" hx-swap="outerHTML" hx-target="body">
@@ -26,7 +48,19 @@
     </div>
     <button type="submit">Upload</button>
 </form>
+<div class="spinner-container" id="spinner">
+    <div class="spinner"></div>
+    <p>Uploading...</p>
+</div>
 {% if message %}
 <p>{{ message }}</p>
 {% endif %}
+<script>
+    document.body.addEventListener('htmx:beforeSend', function(event) {
+        document.getElementById('spinner').style.display = 'flex';
+    });
+    document.body.addEventListener('htmx:afterSettle', function(event) {
+        document.getElementById('spinner').style.display = 'none';
+    });
+</script>
 {% endblock %}
