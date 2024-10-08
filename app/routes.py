@@ -227,30 +227,20 @@ async def upload_form(request: Request):
 async def upload_video(
     request: Request,
     background_tasks: BackgroundTasks,
-    video: Optional[UploadFile] = File(None),
+    video: UploadFile = File(...),
     name: str = Form(...),
-    text: str = Form(...),
-    preset: str = Form(...)
+    text: str = Form(...)
 ):
-    if preset == "Nehammer":
-        filename = "nehammerHD.mp4"
-        file_path = f"presets/{filename}"
-    else:
-        if not video:
-            return templates.TemplateResponse("upload.html", {
-                "request": request,
-                "message": "Please upload a video file for custom preset."
-            })
-        contents = await video.read()
-        filename = video.filename.replace(" ","_")
-        
-        # Ensure the uploads directory exists
-        os.makedirs("uploads", exist_ok=True)
-        
-        # Save the video
-        file_path = f"uploads/{filename}"
-        with open(file_path, "wb") as f:
-            f.write(contents)
+    contents = await video.read()
+    filename = video.filename.replace(" ", "_")
+    
+    # Ensure the uploads directory exists
+    os.makedirs("uploads", exist_ok=True)
+    
+    # Save the video
+    file_path = f"uploads/{filename}"
+    with open(file_path, "wb") as f:
+        f.write(contents)
     
     # Create a new task in the database
     conn = sqlite3.connect('tasks.db')
